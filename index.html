@@ -13,14 +13,27 @@
     }
 
     .container {
-      max-width: 400px;
+      max-width: 400px; /* Limits the container width for larger screens */
       background: white;
-      margin: 100px auto;
+      margin: 100px auto; /* Centers the container and adds vertical margin */
       padding: 40px 30px;
       border-radius: 20px;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
       position: relative;
+      /* For smaller screens, ensure it takes full width with some padding */
+      width: calc(100% - 60px); /* Adjusts for horizontal padding */
+      box-sizing: border-box; /* Includes padding in the width calculation */
     }
+
+    /* Adjustments for very small screens to make the container full width */
+    @media (max-width: 480px) {
+      .container {
+        margin: 30px auto; /* Slightly less vertical margin on small screens */
+        padding: 20px; /* Slightly less padding on small screens */
+        width: calc(100% - 40px); /* Adjusts for horizontal padding on small screens */
+      }
+    }
+
 
     .back-arrow {
       font-size: 20px;
@@ -54,6 +67,7 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 14px;
+      box-sizing: border-box; /* Ensures padding doesn't add to the width */
     }
 
     .password-wrapper {
@@ -180,13 +194,11 @@
       Having trouble? Write us at <a href="mailto:wecare@allen.in">wecare@allen.in</a>
     </div>
 
-    <!-- Loader inside login panel -->
     <div class="loader-panel" id="loaderPanel">
       <div class="loader"></div>
     </div>
   </div>
 
-  <!-- Fullscreen Image Overlay -->
   <div class="overlay" id="imageOverlay" onclick="hideImage()">
     <img src="image.png" alt="Fullscreen Image" />
   </div>
