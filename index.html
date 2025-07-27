@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login with Form ID - ALLEN</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f1f5fb;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+      max-width: 400px;
+      background: white;
+      margin: 100px auto;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .back-arrow {
+      font-size: 20px;
+      text-decoration: none;
+      color: #000;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      height: 30px;
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 20px 0 10px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    .forgot {
+      font-size: 12px;
+      color: #0056d2;
+      text-decoration: none;
+      display: block;
+      margin: 5px 0 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #e2e2e2;
+      border: none;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+    }
+
+    .footer a {
+      color: #0056d2;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Loader inside panel */
+    .loader-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+      z-index: 10;
+    }
+
+    .loader {
+      border: 6px solid #cce4ff;
+      border-top: 6px solid #007bff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Fullscreen Image Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .overlay img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="loginPanel">
+    <a href="#" class="back-arrow">&#8592;</a>
+    <img src="logo.png" alt="ALLEN Logo" class="logo" />
+    
+    <h2>Login with Form ID</h2>
+    <p>Find your form ID on your ID card</p>
+
+    <form onsubmit="handleLogin(event)">
+      <input type="text" placeholder="Form ID" id="formId" required />
+      <div class="password-wrapper">
+        <input type="password" placeholder="Password" id="password" required />
+        <span class="toggle-password" onclick="togglePassword()">
+          <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" fill="#444" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M12 6a9.77 9.77 0 0 1 8.5 6A9.77 9.77 0 0 1 12 18a9.77 9.77 0 0 1-8.5-6A9.77 9.77 0 0 1 12 6zm0 2a4 4 0 1 0 .001 8.001A4 4 0 0 0 12 8z"/>
+          </svg>
+        </span>
+      </div>
+      <a class="forgot" href="#">Forgot password?</a>
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="footer">
+      Having trouble? Write us at <a href="mailto:wecare@allen.in">wecare@allen.in</a>
+    </div>
+
+    <!-- Loader inside login panel -->
+    <div class="loader-panel" id="loaderPanel">
+      <div class="loader"></div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Image Overlay -->
+  <div class="overlay" id="imageOverlay" onclick="hideImage()">
+    <img src="image.png" alt="Fullscreen Image" />
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passField = document.getElementById("password");
+      const eyeIcon = document.getElementById("eyeIcon");
+
+      if (passField.type === "password") {
+        passField.type = "text";
+        eyeIcon.innerHTML = `
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M12 6a9.77 9.77 0 0 1 8.5 6A9.77 9.77 0 0 1 12 18a9.77 9.77 0 0 1-8.5-6A9.77 9.77 0 0 1 12 6zm1.41 4.59L12 11l-1.41-1.41L12 8l1.41 1.41z"/>`;
+      } else {
+        passField.type = "password";
+        eyeIcon.innerHTML = `
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M12 6a9.77 9.77 0 0 1 8.5 6A9.77 9.77 0 0 1 12 18a9.77 9.77 0 0 1-8.5-6A9.77 9.77 0 0 1 12 6zm0 2a4 4 0 1 0 .001 8.001A4 4 0 0 0 12 8z"/>`;
+      }
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const formId = document.getElementById("formId").value;
+      const password = document.getElementById("password").value;
+
+      if (formId === "19046307" && password === "sagar404") {
+        document.getElementById("loaderPanel").style.display = "flex";
+
+        setTimeout(() => {
+          document.getElementById("loginPanel").style.display = "none";
+          document.getElementById("imageOverlay").style.display = "flex";
+        }, 2000);
+      } else {
+        alert("Invalid Form ID or Password!");
+      }
+    }
+
+    function hideImage() {
+      document.getElementById("imageOverlay").style.display = "none";
+    }
+  </script>
+</body>
+</html>
